@@ -113,9 +113,13 @@ function updateCarrinho(){
     if(carrinho.length >0){
         dcSelector('aside').classList.add('show')
         dcSelector('.cart').innerHTML = ''
+        let subtotal = 0
+        let desconto = 0
+        let total = 0
         for(let i in carrinho){
             let pizzaItem = pizzaJson.find((item) => item.id == carrinho[i].id)
             let cartItem = dcSelector('.models .cart--item').cloneNode(true)
+            subtotal = pizzaItem.price * carrinho[i].qt
 
             let pizzaSizeName
             switch (carrinho[i].size){
@@ -148,6 +152,15 @@ function updateCarrinho(){
             })
             dcSelector('.cart').append(cartItem)
         }
+
+        desconto = subtotal * 0.1
+        total = subtotal - desconto
+
+        dcSelector('.subtotal span:last-child').innerHTML = `R$ ${subtotal.toFixed(2)}`
+        dcSelector('.desconto span:last-child').innerHTML = `R$ ${desconto.toFixed(2)}`
+        dcSelector('.total span:last-child').innerHTML = `R$ ${total.toFixed(2)}`
+
+
     }else{
         dcSelector('aside').classList.remove('show')
     }
